@@ -1,7 +1,7 @@
 package rush.hour;
 
 public class Car extends BoardElement {
-    public Car(int x, int y) {
-        super(x, y);
+    public Car(Tile[] tiles, int orientation) {
+        super(tiles, orientation);
     }
 }
