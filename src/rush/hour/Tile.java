@@ -1,14 +1,23 @@
 package rush.hour;
 
-public class BoardElement {
+public class Tile {
 
     private int x;
     private int y;
-    private int direction;
+    private boolean occupied;
 
-    BoardElement(int x, int y) {
+    public Tile(int x, int y, boolean occupied) {
         this.x = x;
         this.y = y;
+        this.occupied = occupied;
+    }
+
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
     }
 
     public int getX() {
@@ -26,6 +35,4 @@ public class BoardElement {
     public void setY(int y) {
         this.y = y;
     }
-
-    public enum direction{ VERTICAL, HORIZONTAL }
 }
