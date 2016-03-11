@@ -14,13 +14,22 @@ import java.util.Map;
 
 public class Board {
 
-    private List<Tile> board;
+    List<BoardElement> boardElements;
 
     public Board() {
+
     }
 
     Board(Path path) {
 
+    }
+
+    public void move(Car boardElement, int moveAmount) {
+        boardElement.move(moveAmount);
+    }
+
+    private String serializeBoard(List<BoardElement> boardElements) {
+        return "serialized board";
     }
 
     /**
@@ -34,21 +43,21 @@ public class Board {
         for (Map.Entry<Character, List<Tile>> entry : readInCharacters.entrySet()) {
             switch (entry.getKey()) {
                 case BoardElement.border:
-                    boardElements.add(new Border(entry.getKey(), false));
+                    boardElements.add(new Border(entry.getKey(), false, entry.getValue()));
                     break;
                 case BoardElement.empty:
-                    boardElements.add(new Empty(entry.getKey(), false));
+                    boardElements.add(new Empty(entry.getKey(), false, entry.getValue()));
                     break;
                 case BoardElement.goal:
-                    boardElements.add(new Goal(entry.getKey(), false));
+                    boardElements.add(new Goal(entry.getKey(), false, entry.getValue()));
                     break;
                 case BoardElement.redcar:
                     orientation = determineOrientation(entry.getValue());
-                    boardElements.add(new RedCar(entry.getKey(), true, orientation));
+                    boardElements.add(new RedCar(entry.getKey(), true, entry.getValue(), orientation));
                     break;
                 default:
                     orientation = determineOrientation(entry.getValue());
-                    boardElements.add(new Car(entry.getKey(), true, orientation));
+                    boardElements.add(new Car(entry.getKey(), true, entry.getValue(), orientation));
                     break;
             }
         }
