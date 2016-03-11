@@ -17,19 +17,16 @@ public class Board {
     List<BoardElement> boardElements;
     int[] boardSize;
 
-    public Board() {
-
-    }
-
     Board(Path path) {
-
+        HashMap<Character, List<Tile>> hashMapBoard = readInBoard(path);
+        this.boardElements = initializeBoard(hashMapBoard);
     }
 
     public void move(Car boardElement, int moveAmount) {
         boardElement.move(moveAmount);
     }
 
-    private char[][] serializeBoard (List<BoardElement> boardElements) {
+    public char[][] serializeBoard () {
         char[][] serializedBoard = new char[boardSize[0]][boardSize[1]];
         for (BoardElement boardElement : boardElements) {
             char id = boardElement.getId();
@@ -40,10 +37,11 @@ public class Board {
         return serializedBoard;
     }
 
-    public void printSerializedBoard(char[][] serializedBoard) {
+    public void printSerializedBoard() {
+        char[][] serializedBoard = serializeBoard();
         for (int x = 0; x < serializedBoard[0].length; x++) {
             for (int y = 0; y < serializedBoard.length; y++) {
-                System.out.print(x);
+                System.out.print(serializedBoard[y][x]);
             }
             System.out.println("");
         }

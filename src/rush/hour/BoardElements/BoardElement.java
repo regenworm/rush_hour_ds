@@ -16,7 +16,9 @@ public class BoardElement {
     char id;
 
     BoardElement(char id, boolean moveable, List<Tile> tiles) {
-
+        this.id = id;
+        this.moveable = moveable;
+        this.tiles = tiles;
     }
 
     public boolean isMoveable() {
