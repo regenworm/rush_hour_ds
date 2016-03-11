@@ -13,6 +13,7 @@ public class BoardElement {
 
     boolean moveable;
     List<Tile> tiles;
+    char id;
 
     BoardElement(char id, boolean moveable, List<Tile> tiles) {
 
@@ -20,5 +21,13 @@ public class BoardElement {
 
     public boolean isMoveable() {
         return moveable;
+    }
+
+    public char getId() {
+        return id;
+    }
+
+    public List<Tile> getTiles() {
+        return tiles;
     }
 }

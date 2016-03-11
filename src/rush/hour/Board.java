@@ -15,6 +15,7 @@ import java.util.Map;
 public class Board {
 
     List<BoardElement> boardElements;
+    int[] boardSize;
 
     public Board() {
 
@@ -28,8 +29,24 @@ public class Board {
         boardElement.move(moveAmount);
     }
 
-    private String serializeBoard(List<BoardElement> boardElements) {
-        return "serialized board";
+    private char[][] serializeBoard (List<BoardElement> boardElements) {
+        char[][] serializedBoard = new char[boardSize[0]][boardSize[1]];
+        for (BoardElement boardElement : boardElements) {
+            char id = boardElement.getId();
+            for (Tile tile : boardElement.getTiles()) {
+                serializedBoard[tile.getX()][tile.getY()] = id;
+            }
+        }
+        return serializedBoard;
+    }
+
+    public void printSerializedBoard(char[][] serializedBoard) {
+        for (int x = 0; x < serializedBoard[0].length; x++) {
+            for (int y = 0; y < serializedBoard.length; y++) {
+                System.out.print(x);
+            }
+            System.out.println("");
+        }
     }
 
     /**
@@ -94,6 +111,11 @@ public class Board {
     private HashMap<Character, List<Tile>> readInBoard(Path path) {
         HashMap<Character, List<Tile>> readInCharacters = new HashMap<>();
         try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+
+            boardSize = new int[2];
+            boardSize[0] = Integer.parseInt(reader.readLine());
+            boardSize[1] = Integer.parseInt(reader.readLine());
+
             String line;
             int yCount = 0;
             int xCount = 0;
