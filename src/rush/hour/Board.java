@@ -16,14 +16,58 @@ public class Board {
 
     List<BoardElement> boardElements;
     int[] boardSize;
+    char[][] board;
 
     Board(Path path) {
         HashMap<Character, List<Tile>> hashMapBoard = readInBoard(path);
         this.boardElements = initializeBoard(hashMapBoard);
+        this.board = serializeBoard();
     }
 
-    public void move(Car boardElement, int moveAmount) {
-        boardElement.move(moveAmount);
+    public List<BoardElement> getBoardElements() {
+        return boardElements;
+    }
+
+    public BoardElement getBoardElement(char id) {
+        for (BoardElement boardElement : boardElements) {
+            if (boardElement.getId() == id) {
+                return boardElement;
+            }
+        }
+        return null;
+    }
+
+    public void move(Car car, int moveAmount) throws BoardElementClashException {
+        Car.Orientation orientation = car.getOrientation();
+
+        List<Tile> carTiles = car.getTiles();
+        List<Tile> newCarTiles = new ArrayList<>();
+        Empty empty = (Empty) getBoardElement('.');
+
+        for (Tile carTile : carTiles) {
+            if (orientation == Car.Orientation.VERTICAL) {
+                int changedCoor = carTile.getY() + moveAmount;
+                if (board[carTile.getX()][changedCoor] == '.' || board[carTile.getX()][changedCoor] == car.getId()) {
+                    empty.addTile(carTile.getX(), carTile.getY());
+                    newCarTiles.add(new Tile(carTile.getX(), changedCoor, true));
+                } else {
+                    throw new BoardElementClashException();
+                }
+            }
+            if (orientation == Car.Orientation.HORIZONTAL) {
+                int changedCoor = carTile.getX() + moveAmount;
+                if (board[changedCoor][carTile.getY()] == '.' || board[changedCoor][carTile.getY()] == car.getId()) {
+                    empty.addTile(carTile.getX(), carTile.getY());
+                    newCarTiles.add(new Tile(changedCoor, carTile.getY(), true));
+                } else {
+                    throw new BoardElementClashException();
+                }
+            }
+        }
+        for (Tile newCarTile : newCarTiles) {
+            empty.removeTile(newCarTile.getX(), newCarTile.getY());
+        }
+        car.setTiles(newCarTiles);
     }
 
     public char[][] serializeBoard () {

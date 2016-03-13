@@ -1,5 +1,7 @@
 package rush.hour;
 
+import rush.hour.BoardElements.Car;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -10,6 +12,14 @@ public class RushHourGame {
     public RushHourGame() {
         Path game = Paths.get("/home/yorick/IdeaProjects/RushHour/res/board1a.rushhour");
         board = new Board(game);
+        printCurrentBoard(board);
+        if (board.getBoardElements().get(1) instanceof Car) {
+            try {
+                board.move((Car) board.getBoardElements().get(1), 1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         printCurrentBoard(board);
     }
 

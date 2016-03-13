@@ -32,4 +32,30 @@ public class BoardElement {
     public List<Tile> getTiles() {
         return tiles;
     }
+
+    public void setTiles(List<Tile> tiles) {
+        this.tiles = tiles;
+    }
+
+    public Tile getTile (int x, int y) {
+        for (Tile tile : tiles) {
+            if (tile.getX() == x && tile.getY() == y) {
+                return tile;
+            }
+        }
+        System.err.println("Tile could not be found in empty");
+        return null;
+    }
+
+    public void addTile (int x, int y) {
+        tiles.add(new Tile(x, y, true));
+    }
+
+    public void removeTile (int x, int y) {
+        for (int i = 0; i < tiles.size(); i++) {
+            if (tiles.get(i).getX() == x && tiles.get(i).getY() == y) {
+                tiles.remove(i);
+            }
+        }
+    }
 }
