@@ -10,7 +10,7 @@ public class RushHourGame {
     private Board board;
 
     public RushHourGame() {
-        Path game = Paths.get("/home/yorick/IdeaProjects/RushHour/res/board1a.rushhour");
+        Path game = Paths.get("/Users/Alex/Documents/Datastructuren/DatastructurenNew/rush_hour_ds/res/board1a.rushhour");
         board = new Board(game);
         printCurrentBoard(board);
         if (board.getBoardElements().get(1) instanceof Car) {
@@ -20,6 +20,11 @@ public class RushHourGame {
                 e.printStackTrace();
             }
         }
+        printCurrentBoard(board);
+        
+        RushAI kirby = new RushAI();
+        board = kirby.getCurrentMoves(board);
+
         printCurrentBoard(board);
     }
 
