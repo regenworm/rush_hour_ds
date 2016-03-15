@@ -4,9 +4,9 @@ import rush.hour.Tile;
 
 import java.util.List;
 
-public class Border extends BoardElement {
+public class Wall extends BoardElement {
 
-    public Border(char id, boolean moveable, List<Tile> tiles) {
+    public Wall(char id, boolean moveable, List<Tile> tiles) {
         super(id, moveable, tiles);
     }
 }

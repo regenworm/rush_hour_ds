@@ -1,0 +1,15 @@
+.tile-empty {
+    -fx-background-color: white;
+}
+
+.tile-wall {
+    -fx-background-color: saddlebrown;
+}
+
+.tile-goal {
+    -fx-background-color: black;
+}
+
+.tile-redcar {
+    -fx-background-color: red;
+}

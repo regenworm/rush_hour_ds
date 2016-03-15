@@ -16,12 +16,22 @@ public class Board {
 
     List<BoardElement> boardElements;
     int[] boardSize;
-    char[][] board;
 
     Board(Path path) {
         HashMap<Character, List<Tile>> hashMapBoard = readInBoard(path);
         this.boardElements = initializeBoard(hashMapBoard);
-        this.board = serializeBoard();
+    }
+
+    public int[] getBoardSize() {
+        return boardSize;
+    }
+
+    public int getBoardColumnCount() {
+        return boardSize[0];
+    }
+
+    public int getBoardRowCount() {
+        return boardSize[1];
     }
 
     public List<BoardElement> getBoardElements() {
@@ -44,12 +54,14 @@ public class Board {
         List<Tile> newCarTiles = new ArrayList<>();
         Empty empty = (Empty) getBoardElement('.');
 
+        char[][] board = serializeBoard();
+
         for (Tile carTile : carTiles) {
             if (orientation == Car.Orientation.VERTICAL) {
                 int changedCoor = carTile.getY() + moveAmount;
                 if (board[carTile.getX()][changedCoor] == '.' || board[carTile.getX()][changedCoor] == car.getId()) {
                     empty.addTile(carTile.getX(), carTile.getY());
-                    newCarTiles.add(new Tile(carTile.getX(), changedCoor, true));
+                    newCarTiles.add(new Tile(carTile.getX(), changedCoor));
                 } else {
                     throw new BoardElementClashException();
                 }
@@ -58,7 +70,7 @@ public class Board {
                 int changedCoor = carTile.getX() + moveAmount;
                 if (board[changedCoor][carTile.getY()] == '.' || board[changedCoor][carTile.getY()] == car.getId()) {
                     empty.addTile(carTile.getX(), carTile.getY());
-                    newCarTiles.add(new Tile(changedCoor, carTile.getY(), true));
+                    newCarTiles.add(new Tile(changedCoor, carTile.getY()));
                 } else {
                     throw new BoardElementClashException();
                 }
@@ -102,7 +114,7 @@ public class Board {
         for (Map.Entry<Character, List<Tile>> entry : readInCharacters.entrySet()) {
             switch (entry.getKey()) {
                 case BoardElement.border:
-                    boardElements.add(new Border(entry.getKey(), false, entry.getValue()));
+                    boardElements.add(new Wall(entry.getKey(), false, entry.getValue()));
                     break;
                 case BoardElement.empty:
                     boardElements.add(new Empty(entry.getKey(), false, entry.getValue()));
@@ -167,17 +179,17 @@ public class Board {
                         if (readInCharacters.containsKey(c)) {
                             List<Tile> tiles = readInCharacters.get(c);
                             if (c == '.') {
-                                tiles.add(new Tile(xCount, yCount, false));
+                                tiles.add(new Tile(xCount, yCount));
                             } else {
-                                tiles.add(new Tile(xCount, yCount, true));
+                                tiles.add(new Tile(xCount, yCount));
                             }
                             readInCharacters.put(c, tiles);
                         } else {
                             ArrayList<Tile> tiles = new ArrayList<>();
                             if (c == '.') {
-                                tiles.add(new Tile(xCount, yCount, false));
+                                tiles.add(new Tile(xCount, yCount));
                             } else {
-                                tiles.add(new Tile(xCount, yCount, true));
+                                tiles.add(new Tile(xCount, yCount));
                             }
                             readInCharacters.put(c, tiles);
                         }
@@ -190,4 +202,6 @@ public class Board {
         }
         return readInCharacters;
     }
+
+    public enum BoardMeasure { WIDTH, HEIGHT };
 }
