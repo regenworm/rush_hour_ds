@@ -48,7 +48,7 @@ public class BoardElement {
     }
 
     public void addTile (int x, int y) {
-        tiles.add(new Tile(x, y, true));
+        tiles.add(new Tile(x, y));
     }
 
     public void removeTile (int x, int y) {

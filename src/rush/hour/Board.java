@@ -61,7 +61,7 @@ public class Board {
                 int changedCoor = carTile.getY() + moveAmount;
                 if (board[carTile.getX()][changedCoor] == '.' || board[carTile.getX()][changedCoor] == car.getId()) {
                     empty.addTile(carTile.getX(), carTile.getY());
-                    newCarTiles.add(new Tile(carTile.getX(), changedCoor, true));
+                    newCarTiles.add(new Tile(carTile.getX(), changedCoor));
                 } else {
                     throw new BoardElementClashException();
                 }
@@ -70,7 +70,7 @@ public class Board {
                 int changedCoor = carTile.getX() + moveAmount;
                 if (board[changedCoor][carTile.getY()] == '.' || board[changedCoor][carTile.getY()] == car.getId()) {
                     empty.addTile(carTile.getX(), carTile.getY());
-                    newCarTiles.add(new Tile(changedCoor, carTile.getY(), true));
+                    newCarTiles.add(new Tile(changedCoor, carTile.getY()));
                 } else {
                     throw new BoardElementClashException();
                 }
@@ -179,17 +179,17 @@ public class Board {
                         if (readInCharacters.containsKey(c)) {
                             List<Tile> tiles = readInCharacters.get(c);
                             if (c == '.') {
-                                tiles.add(new Tile(xCount, yCount, false));
+                                tiles.add(new Tile(xCount, yCount));
                             } else {
-                                tiles.add(new Tile(xCount, yCount, true));
+                                tiles.add(new Tile(xCount, yCount));
                             }
                             readInCharacters.put(c, tiles);
                         } else {
                             ArrayList<Tile> tiles = new ArrayList<>();
                             if (c == '.') {
-                                tiles.add(new Tile(xCount, yCount, false));
+                                tiles.add(new Tile(xCount, yCount));
                             } else {
-                                tiles.add(new Tile(xCount, yCount, true));
+                                tiles.add(new Tile(xCount, yCount));
                             }
                             readInCharacters.put(c, tiles);
                         }

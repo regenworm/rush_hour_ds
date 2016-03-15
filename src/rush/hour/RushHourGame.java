@@ -1,8 +1,6 @@
 package rush.hour;
 
 import javafx.application.Application;
-import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,13 +13,10 @@ import java.nio.file.Paths;
 public class RushHourGame extends Application {
 
     private Board board;
-    private int[] boardSize;
-    private Stage primaryStage;
 
     public RushHourGame() {
         Path game = Paths.get("/home/yorick/IdeaProjects/RushHour/res/board1a.rushhour");
         board = new Board(game);
-        boardSize = board.getBoardSize();
         printCurrentBoard(board);
         if (board.getBoardElements().get(1) instanceof Car) {
             try {
@@ -38,10 +33,6 @@ public class RushHourGame extends Application {
         launch(args);
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../res/frame.fxml"));
@@ -56,12 +47,6 @@ public class RushHourGame extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    @FXML
-    void onExit(Event event) {
-        Stage stage = (Stage) primaryStage.getScene().getWindow();
-        stage.close();
     }
 
     public void printCurrentBoard(Board board) {
