@@ -16,12 +16,10 @@ public class Board {
 
     List<BoardElement> boardElements;
     int[] boardSize;
-    char[][] board;
 
     Board(Path path) {
         HashMap<Character, List<Tile>> hashMapBoard = readInBoard(path);
         this.boardElements = initializeBoard(hashMapBoard);
-        this.board = serializeBoard();
     }
 
     public int[] getBoardSize() {
@@ -55,6 +53,8 @@ public class Board {
         List<Tile> carTiles = car.getTiles();
         List<Tile> newCarTiles = new ArrayList<>();
         Empty empty = (Empty) getBoardElement('.');
+
+        char[][] board = serializeBoard();
 
         for (Tile carTile : carTiles) {
             if (orientation == Car.Orientation.VERTICAL) {
@@ -114,7 +114,7 @@ public class Board {
         for (Map.Entry<Character, List<Tile>> entry : readInCharacters.entrySet()) {
             switch (entry.getKey()) {
                 case BoardElement.border:
-                    boardElements.add(new Border(entry.getKey(), false, entry.getValue()));
+                    boardElements.add(new Wall(entry.getKey(), false, entry.getValue()));
                     break;
                 case BoardElement.empty:
                     boardElements.add(new Empty(entry.getKey(), false, entry.getValue()));

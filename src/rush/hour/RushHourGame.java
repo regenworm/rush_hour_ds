@@ -1,6 +1,8 @@
 package rush.hour;
 
 import javafx.application.Application;
+import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,6 +16,7 @@ public class RushHourGame extends Application {
 
     private Board board;
     private int[] boardSize;
+    private Stage primaryStage;
 
     public RushHourGame() {
         Path game = Paths.get("/home/yorick/IdeaProjects/RushHour/res/board1a.rushhour");
@@ -30,19 +33,19 @@ public class RushHourGame extends Application {
         }
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
     public static void main(String[] args) {
         RushHourGame rushHourGame = new RushHourGame();
         launch(args);
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../res/frame.fxml"));
-        UIController uiController = new UIController(board, boardSize);
+        UIController uiController = new UIController(board);
         loader.setController(uiController);
         Parent root = loader.load();
         primaryStage.setTitle("RushHour");
@@ -53,6 +56,12 @@ public class RushHourGame extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    @FXML
+    void onExit(Event event) {
+        Stage stage = (Stage) primaryStage.getScene().getWindow();
+        stage.close();
     }
 
     public void printCurrentBoard(Board board) {
