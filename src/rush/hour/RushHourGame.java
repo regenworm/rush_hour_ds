@@ -15,17 +15,25 @@ public class RushHourGame extends Application {
     private Board board;
 
     public RushHourGame() {
-        Path game = Paths.get("/home/yorick/IdeaProjects/RushHour/res/board1a.rushhour");
+        // Path ondersteund geen relatief pad...
+//        Path game = Paths.get("/home/yorick/IdeaProjects/RushHour/boards/board1a.rushhour");
+        Path game = Paths.get("/Users/Alex/Documents/Datastructuren/DatastructurenNew/rush_hour_ds/boards/board1a.rushhour");
+        System.out.println(game.getParent());
         board = new Board(game);
         printCurrentBoard(board);
         if (board.getBoardElements().get(1) instanceof Car) {
             try {
-                board.move((Car) board.getBoardElements().get(9), -3);
-                printCurrentBoard(board);
+                board.move((Car) board.getBoardElements().get(1), 1);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        printCurrentBoard(board);
+
+        RushAI kirby = new RushAI();
+        board = kirby.getCurrentMoves(board);
+
+        printCurrentBoard(board);
     }
 
     public static void main(String[] args) {
