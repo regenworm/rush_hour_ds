@@ -24,6 +24,18 @@ public class Board {
         this.board = serializeBoard();
     }
 
+    public int[] getBoardSize() {
+        return boardSize;
+    }
+
+    public int getBoardColumnCount() {
+        return boardSize[0];
+    }
+
+    public int getBoardRowCount() {
+        return boardSize[1];
+    }
+
     public List<BoardElement> getBoardElements() {
         return boardElements;
     }
@@ -190,4 +202,6 @@ public class Board {
         }
         return readInCharacters;
     }
+
+    public enum BoardMeasure { WIDTH, HEIGHT };
 }

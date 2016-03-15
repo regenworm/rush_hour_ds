@@ -1,0 +1,7 @@
+.tile-default {
+    -fx-background-color: red;
+}
+
+.tile-wall {
+    -fx-background-color: saddlebrown;
+}
