@@ -37,6 +37,18 @@ public class BoardElement {
         this.tiles = tiles;
     }
 
+    public void appendTiles(List<Tile> tiles) {
+        for (Tile tile : tiles) {
+            this.tiles.add(tile);
+        }
+    }
+
+    public void removeTiles(List<Tile> tiles) {
+        for (Tile tile : tiles) {
+            this.tiles.remove(tile);
+        }
+    }
+
     /**
      * Get a specific tile by x and y coordinates
      * @param x x-coordinate

@@ -106,7 +106,10 @@ public class Board {
         Car.Orientation orientation = car.getOrientation();
 
         List<Tile> carTiles = car.getTiles();
+
         List<Tile> newCarTiles = new ArrayList<>();
+        List<Tile> newEmptyTiles = new ArrayList<>();
+
         Empty empty = (Empty) getBoardElement('.');
 
         char[][] board = serializeBoard();
@@ -115,7 +118,7 @@ public class Board {
             if (orientation == Car.Orientation.VERTICAL) {
                 int changedCoor = carTile.getY() + moveAmount;
                 if (board[carTile.getX()][changedCoor] == '.' || board[carTile.getX()][changedCoor] == car.getId()) {
-                    empty.addTile(carTile.getX(), carTile.getY());
+                    newEmptyTiles.add(new Tile(carTile.getX(), carTile.getY()));
                     newCarTiles.add(new Tile(carTile.getX(), changedCoor));
                 } else {
                     throw new BoardElementClashException();
@@ -124,17 +127,26 @@ public class Board {
             if (orientation == Car.Orientation.HORIZONTAL) {
                 int changedCoor = carTile.getX() + moveAmount;
                 if (board[changedCoor][carTile.getY()] == '.' || board[changedCoor][carTile.getY()] == car.getId()) {
-                    empty.addTile(carTile.getX(), carTile.getY());
+                    newEmptyTiles.add(new Tile(carTile.getX(), carTile.getY()));
                     newCarTiles.add(new Tile(changedCoor, carTile.getY()));
                 } else {
                     throw new BoardElementClashException();
                 }
             }
         }
-        for (Tile newCarTile : newCarTiles) {
-            empty.removeTile(newCarTile.getX(), newCarTile.getY());
+
+        // Intersection of lists
+        for (Tile tile : newCarTiles) {
+            if (newEmptyTiles.contains(tile)) {
+                newEmptyTiles.remove(tile);
+            }
         }
-        car.setTiles(newCarTiles);
+
+        car.removeTiles(newEmptyTiles);
+        empty.removeTiles(newCarTiles);
+
+        car.appendTiles(newCarTiles);
+        empty.appendTiles(newEmptyTiles);
     }
 
     /**

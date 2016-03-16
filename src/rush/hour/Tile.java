@@ -24,4 +24,21 @@ public class Tile {
     public void setY(int y) {
         this.y = y;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        boolean equal = false;
+        if (o != null && o instanceof Tile) {
+            equal = (x == ((Tile) o).x && y == ((Tile) o).y);
+        }
+        return equal;
+    }
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
