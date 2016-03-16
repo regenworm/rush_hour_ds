@@ -55,6 +55,33 @@ public class Board {
     }
 
     /**
+     * Gets the goal tiles of the red car. These are the tiles in front of the Goal object tile. WARNING: only works for
+     * goals placed in the right or bottom wall.
+     * @return A list of tiles where the RedCar should be placed.
+     */
+    public List<Tile> getGoalTiles() {
+        // Get the coorindates from the Goal Tile
+        Goal goal = (Goal) getBoardElement(BoardElement.goal);
+        List<Tile> tiles = goal.getTiles();
+        int xGoal = tiles.get(0).getX();
+        int yGoal = tiles.get(0).getY();
+
+        // RedCar only for length of the RedCar
+        RedCar redCar = (RedCar) getBoardElement(BoardElement.redcar);
+        int redCarLength = redCar.getTiles().size();
+
+        List<Tile> goalTiles = new ArrayList<>();
+        for (int i=0; i<redCarLength; i++) {
+            if (redCar.getOrientation() == Car.Orientation.HORIZONTAL) {
+                goalTiles.add(new Tile(xGoal - i, yGoal));
+            } else {
+                goalTiles.add(new Tile(xGoal, yGoal - i));
+            }
+        }
+        return goalTiles;
+    }
+
+    /**
      * Gets a board element for the list of board elements by id
      * @param id the id of the board element
      * @return board element when found, otherwise returns null
