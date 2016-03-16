@@ -27,8 +27,8 @@
         <HBox fx:id="gridContainer" alignment="CENTER"></HBox>
 
         <HBox alignment="BOTTOM_CENTER">
-            <Button text="Previous step"></Button>
-            <Button text="Next step"></Button>
+            <Button fx:id="onPrevious" text="Previous step"></Button>
+            <Button fx:id="onNext" text="Next step"></Button>
         </HBox>
 
     </children>

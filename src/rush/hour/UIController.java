@@ -3,6 +3,7 @@ package rush.hour;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -17,6 +18,13 @@ public class UIController implements Initializable {
     HBox gridContainer;
     @FXML
     MenuItem onExit;
+
+    @FXML
+    Button onNext;
+
+    @FXML
+    Button onPrevious;
+
     private Board board;
     private Pane[][] tiles;
 
@@ -28,7 +36,9 @@ public class UIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         gridContainer.getChildren().add(addGameBoard());
-        onExit.setOnAction((event) -> exitProgram());
+        onExit.setOnAction(actionEvent -> exitProgram());
+        onPrevious.setOnAction(actionEvent -> nextBoard());
+        onNext.setOnAction(actionEvent -> previousBoard());
     }
 
     private GridPane addGameBoard() {
@@ -39,9 +49,33 @@ public class UIController implements Initializable {
         grid.setGridLinesVisible(true);
         grid.setStyle("-fx-background-color:white;");
 
+        for(int y=0; y < board.getBoardRowCount(); y++) {
+            for (int x=0; x < board.getBoardColumnCount(); x++) {
+                Pane cell = new Pane();
+                grid.add(cell, x, y);
+                tiles[x][y] = cell;
+            }
+        }
+
+        // Sets the height and width of the board tiles/cells
+        int loopOver;
+        if (board.getBoardColumnCount() > board.getBoardRowCount()) {
+            loopOver = board.getBoardColumnCount();
+        } else {
+            loopOver = board.getBoardRowCount();
+        }
+        for (int i=0; i < loopOver; i++) {
+            grid.getColumnConstraints().add(new ColumnConstraints(60));
+            grid.getRowConstraints().add(new RowConstraints(60));
+        }
+
+        return grid;
+    }
+
+    private void updateGameBoard() {
         for (BoardElement boardElement : board.getBoardElements()) {
             for (Tile tile : boardElement.getTiles()) {
-                Pane cell = new Pane();
+                Pane cell = tiles[tile.getX()][tile.getY()];
                 if (boardElement instanceof Wall) {
                     cell.getStyleClass().add("tile-wall");
                 } else if (boardElement instanceof Empty) {
@@ -54,24 +88,16 @@ public class UIController implements Initializable {
                     //TODO randomize normal car colors
                     cell.setStyle("-fx-background-color: " + "#AA66CC" + ";");
                 }
-                grid.add(cell, tile.getX(), tile.getY());
-                tiles[tile.getX()][tile.getY()] = cell;
             }
         }
+    }
 
-        // Sets the height and width of the board tiles/cells
-        int loopOver;
-        if (board.getBoardColumnCount() > board.getBoardRowCount()) {
-            loopOver = board.getBoardColumnCount();
-        } else {
-            loopOver = board.getBoardRowCount();
-        }
-        for (int i=0; i < loopOver; i++) {
-            grid.getColumnConstraints().add(new ColumnConstraints(100));
-            grid.getRowConstraints().add(new RowConstraints(100));
-        }
+    private void nextBoard() {
+        updateGameBoard();
+    }
 
-        return grid;
+    private void previousBoard() {
+        updateGameBoard();
     }
 
     private void exitProgram() {
