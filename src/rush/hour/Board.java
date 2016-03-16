@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Board {
 
@@ -279,10 +282,15 @@ public class Board {
 
     @Override
     public String toString() {
-        return "Board{" +
-                "boardElements=" + boardElements +
-                ", boardSize=" + Arrays.toString(boardSize) +
-                ", board=" + Arrays.toString(board) +
-                '}';
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < getBoardRowCount(); i++)
+        {
+            for(int j = 0; j < getBoardColumnCount(); j++)
+            {
+                builder.append(board[j][i]);
+            }
+            builder.append("\n");
+        }
+        return builder.toString();
     }
 }
