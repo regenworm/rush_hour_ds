@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import rush.hour.BoardElements.*;
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class UIController implements Initializable {
@@ -82,6 +83,7 @@ public class UIController implements Initializable {
      */
     private void updateGameBoard() {
         for (BoardElement boardElement : board.getBoardElements()) {
+            String randomCarColor = Util.generateColor(new Random());
             for (Tile tile : boardElement.getTiles()) {
                 Pane cell = tiles[tile.getX()][tile.getY()];
                 if (boardElement instanceof Wall) {
@@ -93,8 +95,8 @@ public class UIController implements Initializable {
                 } else if (boardElement instanceof RedCar) {
                     cell.getStyleClass().add("tile-redcar");
                 } else if (boardElement instanceof Car) {
-                    //TODO randomize normal car colors
-                    cell.setStyle("-fx-background-color: " + "#AA66CC" + ";");
+                    //TODO SAVE CAR COLOR BETWEEN STEPS
+                    cell.setStyle("-fx-background-color: " + randomCarColor + ";");
                 }
             }
         }
