@@ -284,32 +284,29 @@ public class Board {
 
         boardSize = size;
 
-        int yCount = 0;
-        int xCount = 0;
+//        int yCount = 0;
+//        int xCount = 0;
 
-        while(yCount < boardSize[0] && xCount < boardSize[1]) {
-            xCount = 0;
-            for (char c : board[yCount]) {
-                if (readInCharacters.containsKey(c)) {
-                    List<Tile> tiles = readInCharacters.get(c);
-                    if (c == '.') {
+        for (int yCount = 0; yCount < boardSize[0]; yCount++) {
+            for (int xCount = 0; xCount < boardSize[1]; xCount++) {
+                if (readInCharacters.containsKey(board[xCount][yCount])) {
+                    List<Tile> tiles = readInCharacters.get(board[xCount][yCount]);
+                    if (board[xCount][yCount] == '.') {
                         tiles.add(new Tile(xCount, yCount));
                     } else {
                         tiles.add(new Tile(xCount, yCount));
                     }
-                    readInCharacters.put(c, tiles);
+                    readInCharacters.put(board[xCount][yCount], tiles);
                 } else {
                     ArrayList<Tile> tiles = new ArrayList<>();
-                    if (c == '.') {
+                    if (board[xCount][yCount] == '.') {
                         tiles.add(new Tile(xCount, yCount));
                     } else {
                         tiles.add(new Tile(xCount, yCount));
                     }
-                    readInCharacters.put(c, tiles);
+                    readInCharacters.put(board[xCount][yCount], tiles);
                 }
-                xCount++;
             }
-            yCount++;
         }
 
         return readInCharacters;

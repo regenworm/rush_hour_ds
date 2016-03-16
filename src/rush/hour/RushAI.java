@@ -51,14 +51,13 @@ public class RushAI {
                         // if move succeeds, add to history
                         addToHistory(tempBoard);
                         System.out.println("Legal move!");
-                        tempBoard.printSerializedBoard();
-                        System.out.println("\n\n\n");
+//                        tempBoard.printSerializedBoard();
+//                        System.out.println("\n\n\n");
 
                         // reset board
                     }
                 } catch (BoardElementClashException|ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Illegal move\n");
-                    tempBoard = board.getCopy();
+//                    System.out.println("Illegal move\n");
                 }
 
                 try {
@@ -69,14 +68,13 @@ public class RushAI {
                         // if move succeeds, add to history
                         addToHistory(tempBoard);
                         System.out.println("Legal move!");
-                        tempBoard.printSerializedBoard();
-                        board.printSerializedBoard();
-                        System.out.println("\n\n\n");
+//                        tempBoard.printSerializedBoard();
+//                        board.printSerializedBoard();
+//                        System.out.println("\n\n\n");
 
                     }
                 } catch (BoardElementClashException|ArrayIndexOutOfBoundsException e) {
                     System.out.println("Illegal move\n");
-                    tempBoard = board.getCopy();
                 }
             }
         }
