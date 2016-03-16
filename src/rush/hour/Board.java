@@ -7,28 +7,27 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Board {
 
     List<BoardElement> boardElements;
     int[] boardSize;
+    char[][] board;
 
     Board(Path path) {
-        HashMap<Character, List<Tile>> hashMapBoard = readInBoard(path);
-        this.boardElements = initializeBoard(hashMapBoard);
+        this.board = readInBoardFromFile(path);
+        this.boardElements = deSerializeBoard();
     }
 
     Board (char[][] serializedBoard, int[] boardSize){
-        HashMap<Character, List<Tile>> hashMapBoard = readInSerializedBoard(serializedBoard, boardSize);
-        this.boardElements = initializeBoard(hashMapBoard);
+        this.board = serializedBoard;
+        this.boardSize = boardSize;
+        this.boardElements = deSerializeBoard();
     }
 
     public Board getCopy() {
-        return new Board(serializeBoard(),this.boardSize);
+        return new Board(serializeBoard(), boardSize);
     }
 
     /**
@@ -169,23 +168,36 @@ public class Board {
         return serializedBoard;
     }
 
-    public void printSerializedBoard() {
-        char[][] serializedBoard = serializeBoard();
-        for (int x = 0; x < serializedBoard[0].length; x++) {
-            for (int y = 0; y < serializedBoard.length; y++) {
-                System.out.print(serializedBoard[y][x]);
-            }
-            System.out.println("");
-        }
-    }
-
     /**
-     * Initializes the board from a hashmap produced by {@link #readInBoard(Path path) readInBoard}
-     * @param readInCharacters The hashmap of characters and lists of tiles
-     * @return A list of initialized board elements
+     * Converts a board represented as a character array to a list of BoardElements.
+     * @return list of board elements
      */
-    private List<BoardElement> initializeBoard(HashMap<Character, List<Tile>> readInCharacters) {
+    public List<BoardElement> deSerializeBoard() {
         List<BoardElement> boardElements = new ArrayList<>();
+        HashMap<Character, List<Tile>> readInCharacters = new HashMap<>();
+
+        for (int yCount = 0; yCount < getBoardRowCount(); yCount++) {
+            for (int xCount = 0; xCount < getBoardColumnCount(); xCount++) {
+                if (readInCharacters.containsKey(board[xCount][yCount])) {
+                    List<Tile> tiles = readInCharacters.get(board[xCount][yCount]);
+                    if (board[xCount][yCount] == '.') {
+                        tiles.add(new Tile(xCount, yCount));
+                    } else {
+                        tiles.add(new Tile(xCount, yCount));
+                    }
+                    readInCharacters.put(board[xCount][yCount], tiles);
+                } else {
+                    ArrayList<Tile> tiles = new ArrayList<>();
+                    if (board[xCount][yCount] == '.') {
+                        tiles.add(new Tile(xCount, yCount));
+                    } else {
+                        tiles.add(new Tile(xCount, yCount));
+                    }
+                    readInCharacters.put(board[xCount][yCount], tiles);
+                }
+            }
+        }
+
         Car.Orientation orientation;
         for (Map.Entry<Character, List<Tile>> entry : readInCharacters.entrySet()) {
             switch (entry.getKey()) {
@@ -208,7 +220,40 @@ public class Board {
                     break;
             }
         }
+
         return boardElements;
+    }
+
+    /**
+     * Reads in a board from a text file.
+     * @param path The path to the board file
+     * @return A hasmap containing the character used in the text file as key and a list of occupied tiles by the
+     * character as value.
+     */
+    private char[][] readInBoardFromFile(Path path) {
+        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+            boardSize = new int[2];
+            boardSize[0] = Integer.parseInt(reader.readLine());
+            boardSize[1] = Integer.parseInt(reader.readLine());
+
+            char[][] board = new char[boardSize[0]][boardSize[1]];
+
+            String line;
+            int yCount = 0;
+            int xCount = 0;
+            while((line = reader.readLine()) != null) {
+                xCount = 0;
+                for (char c : line.toCharArray()) {
+                    board[xCount][yCount] = c;
+                    xCount++;
+                }
+                yCount++;
+            }
+            return board;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -232,83 +277,12 @@ public class Board {
         return Car.Orientation.UNDEFINED;
     }
 
-    /**
-     * Reads in a board from a text file.
-     * @param path The path to the board file
-     * @return A hasmap containing the character used in the text file as key and a list of occupied tiles by the
-     * character as value.
-     */
-    private HashMap<Character, List<Tile>> readInBoard(Path path) {
-        HashMap<Character, List<Tile>> readInCharacters = new HashMap<>();
-        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
-
-            boardSize = new int[2];
-            boardSize[0] = Integer.parseInt(reader.readLine());
-            boardSize[1] = Integer.parseInt(reader.readLine());
-
-            String line;
-            int yCount = 0;
-            int xCount = 0;
-            while((line = reader.readLine()) != null) {
-                xCount = 0;
-                for (char c : line.toCharArray()) {
-                        if (readInCharacters.containsKey(c)) {
-                            List<Tile> tiles = readInCharacters.get(c);
-                            if (c == '.') {
-                                tiles.add(new Tile(xCount, yCount));
-                            } else {
-                                tiles.add(new Tile(xCount, yCount));
-                            }
-                            readInCharacters.put(c, tiles);
-                        } else {
-                            ArrayList<Tile> tiles = new ArrayList<>();
-                            if (c == '.') {
-                                tiles.add(new Tile(xCount, yCount));
-                            } else {
-                                tiles.add(new Tile(xCount, yCount));
-                            }
-                            readInCharacters.put(c, tiles);
-                        }
-                    xCount++;
-                }
-                yCount++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return readInCharacters;
-    }
-
-    private HashMap<Character, List<Tile>> readInSerializedBoard(char[][] board, int[] size) {
-        HashMap<Character, List<Tile>> readInCharacters = new HashMap<>();
-
-        boardSize = size;
-
-//        int yCount = 0;
-//        int xCount = 0;
-
-        for (int yCount = 0; yCount < boardSize[0]; yCount++) {
-            for (int xCount = 0; xCount < boardSize[1]; xCount++) {
-                if (readInCharacters.containsKey(board[xCount][yCount])) {
-                    List<Tile> tiles = readInCharacters.get(board[xCount][yCount]);
-                    if (board[xCount][yCount] == '.') {
-                        tiles.add(new Tile(xCount, yCount));
-                    } else {
-                        tiles.add(new Tile(xCount, yCount));
-                    }
-                    readInCharacters.put(board[xCount][yCount], tiles);
-                } else {
-                    ArrayList<Tile> tiles = new ArrayList<>();
-                    if (board[xCount][yCount] == '.') {
-                        tiles.add(new Tile(xCount, yCount));
-                    } else {
-                        tiles.add(new Tile(xCount, yCount));
-                    }
-                    readInCharacters.put(board[xCount][yCount], tiles);
-                }
-            }
-        }
-
-        return readInCharacters;
+    @Override
+    public String toString() {
+        return "Board{" +
+                "boardElements=" + boardElements +
+                ", boardSize=" + Arrays.toString(boardSize) +
+                ", board=" + Arrays.toString(board) +
+                '}';
     }
 }

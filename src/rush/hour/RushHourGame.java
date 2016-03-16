@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import rush.hour.BoardElements.Car;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,6 +49,6 @@ public class RushHourGame extends Application {
      }
 
     public void printCurrentBoard(Board board) {
-        board.printSerializedBoard();
+        System.out.println(board.toString());
     }
 }
