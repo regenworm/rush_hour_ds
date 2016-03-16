@@ -32,7 +32,7 @@ public class RushAI {
     public Board getCurrentMoves(Board board) {
         // init variables
         int numberOfElements = board.getBoardElements().size();
-        Board tempBoard = board, bestBoard = board;
+        Board tempBoard = board;
 
         // loop over board elements
         for (int i = 0; i < 2; i++) {
@@ -50,7 +50,7 @@ public class RushAI {
                         System.out.println("\n\n\n");
 
                         // reset board
-                        tempBoard = board;
+                        tempBoard.move((Car) tempBoard.getBoardElements().get(i), -k);
                     }
                 } catch (BoardElementClashException e) {
                     System.out.println("Illegal move\n");
@@ -70,7 +70,7 @@ public class RushAI {
                         System.out.println("\n\n\n");
 
                         // reset board
-                        tempBoard = board;
+                        board.move((Car) tempBoard.getBoardElements().get(i), -k);
                     }
                 } catch (BoardElementClashException e) {
                     System.out.println("Illegal move\n");
