@@ -22,6 +22,15 @@ public class Board {
         this.boardElements = initializeBoard(hashMapBoard);
     }
 
+    Board (char[][] serializedBoard, int[] boardSize){
+        HashMap<Character, List<Tile>> hashMapBoard = readInSerializedBoard(serializedBoard, boardSize);
+        this.boardElements = initializeBoard(hashMapBoard);
+    }
+
+    public Board getCopy() {
+        return new Board(serializeBoard(),this.boardSize);
+    }
+
     /**
      * Getter function for the board size
      * @return An array where [0] is the x count, and [1] is the y count
@@ -271,6 +280,42 @@ public class Board {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return readInCharacters;
+    }
+
+    private HashMap<Character, List<Tile>> readInSerializedBoard(char[][] board, int[] size) {
+        HashMap<Character, List<Tile>> readInCharacters = new HashMap<>();
+
+        boardSize = size;
+
+        int yCount = 0;
+        int xCount = 0;
+
+        while(yCount < boardSize[0] && xCount < boardSize[1]) {
+            xCount = 0;
+            for (char c : board[yCount]) {
+                if (readInCharacters.containsKey(c)) {
+                    List<Tile> tiles = readInCharacters.get(c);
+                    if (c == '.') {
+                        tiles.add(new Tile(xCount, yCount));
+                    } else {
+                        tiles.add(new Tile(xCount, yCount));
+                    }
+                    readInCharacters.put(c, tiles);
+                } else {
+                    ArrayList<Tile> tiles = new ArrayList<>();
+                    if (c == '.') {
+                        tiles.add(new Tile(xCount, yCount));
+                    } else {
+                        tiles.add(new Tile(xCount, yCount));
+                    }
+                    readInCharacters.put(c, tiles);
+                }
+                xCount++;
+            }
+            yCount++;
+        }
+
         return readInCharacters;
     }
 }
