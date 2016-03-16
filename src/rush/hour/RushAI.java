@@ -11,13 +11,14 @@ public class RushAI {
 
 
     public RushAI() {
+        // historyBoards = new ArrayList<Board>();
         System.out.println("Lets AI! <(0_0<) <(0_0)> (>0_0)>");
     }
 
     // add to history
     private void addToHistory(Board board) {
         System.out.println("Added to history");
-        historyBoards.add(board);
+        // historyBoards.add(board);
         // get String version of board
         // store in history structure
     }
@@ -31,24 +32,50 @@ public class RushAI {
     public Board getCurrentMoves(Board board) {
         // init variables
         int numberOfElements = board.getBoardElements().size();
-        Board tempBoard = board;
+        Board tempBoard = board, bestBoard = board;
 
         // loop over board elements
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             // if element is a car
             if (tempBoard.getBoardElements().get(i) instanceof Car) {
                 // move element -MAX_MOVES < k < MAX_MOVES tiles
-                for (int k = -MAX_MOVES; k < MAX_MOVES; k++) {
-                    try {
+                try {
+                    for (int k = -1; k > -MAX_MOVES; k--) {
                         tempBoard.move((Car) tempBoard.getBoardElements().get(i), k);
 
                         // if move succeeds, add to history
                         addToHistory(tempBoard);
-                    } catch (BoardElementClashException e) {
-                        System.out.println("Illegal move");
+                        System.out.println("Legal move!");
+                        tempBoard.printSerializedBoard();
+                        System.out.println("\n\n\n");
+
+                        // reset board
+                        tempBoard = board;
                     }
-                    board.printSerializedBoard();
-                    tempBoard = board;
+                } catch (BoardElementClashException e) {
+                    System.out.println("Illegal move\n");
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Illegal move\n");
+                }
+                tempBoard = board;
+                try {
+                    for (int k = 1; k < MAX_MOVES; k++) {
+                        tempBoard.move((Car) tempBoard.getBoardElements().get(i), k);
+
+                        // if move succeeds, add to history
+                        addToHistory(tempBoard);
+                        System.out.println("Legal move!");
+                        tempBoard.printSerializedBoard();
+                        board.printSerializedBoard();
+                        System.out.println("\n\n\n");
+
+                        // reset board
+                        tempBoard = board;
+                    }
+                } catch (BoardElementClashException e) {
+                    System.out.println("Illegal move\n");
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Illegal move\n");
                 }
             }
         }
