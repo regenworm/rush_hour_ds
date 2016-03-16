@@ -22,7 +22,7 @@ public class RushHourGame extends Application {
         board = new Board(game);
         printCurrentBoard(board);
 
-        RushAI kirby = new RushAI();
+        RushAI kirby = new RushAI(board);
         board = kirby.getCurrentMoves(board);
 
         printCurrentBoard(board);
