@@ -5,22 +5,15 @@ import rush.hour.BoardElements.Car;
 import java.util.List;
 
 public class RushAI {
-    private static final int MAX_MOVES = 3;
-    public List<Board> historyBoards;
+    private static final int MAX_MOVES = 8;
+    public BoardHistory historyBoards;
     private int moves = 0;
 
 
-    public RushAI() {
+    public RushAI(Board board) {
         // historyBoards = new ArrayList<Board>();
         System.out.println("Lets AI! <(0_0<) <(0_0)> (>0_0)>");
-    }
-
-    // add to history
-    private void addToHistory(Board board) {
-        System.out.println("Added to history");
-        // historyBoards.add(board);
-        // get String version of board
-        // store in history structure
+        historyBoards = new BoardHistory(board.getCopy());
     }
 
     // heuristic
@@ -34,7 +27,6 @@ public class RushAI {
         // init variables
         Board tempBoard = board.getCopy();
         int numberOfElements = tempBoard.getBoardElements().size();
-        System.out.println(numberOfElements);
 
 
         // loop over board elements
@@ -49,15 +41,10 @@ public class RushAI {
                         tempBoard.move((Car) tempBoard.getBoardElements().get(i), k);
 
                         // if move succeeds, add to history
-                        addToHistory(tempBoard);
+                        historyBoards.addNode(tempBoard,i,k);
                         System.out.println("Legal move!");
-//                        tempBoard.printSerializedBoard();
-//                        System.out.println("\n\n\n");
-
-                        // reset board
                     }
                 } catch (BoardElementClashException|ArrayIndexOutOfBoundsException e) {
-//                    System.out.println("Illegal move\n");
                 }
 
                 try {
@@ -66,15 +53,10 @@ public class RushAI {
                         tempBoard.move((Car) tempBoard.getBoardElements().get(i), k);
 
                         // if move succeeds, add to history
-                        addToHistory(tempBoard);
+                        historyBoards.addNode(tempBoard,i,k);
                         System.out.println("Legal move!");
-//                        tempBoard.printSerializedBoard();
-//                        board.printSerializedBoard();
-//                        System.out.println("\n\n\n");
-
                     }
                 } catch (BoardElementClashException|ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Illegal move\n");
                 }
             }
         }
