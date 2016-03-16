@@ -18,6 +18,7 @@ public class RushAI {
 
     // heuristic
     private float getScore(Board board) {
+
         return 0;
     }
 

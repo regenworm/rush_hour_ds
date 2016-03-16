@@ -8,7 +8,16 @@ public class BoardHistory {
     private BoardHistory parent;
     private List<BoardHistory> children;
     private int level;
-    public int[] moves = new int[2];
+    private int[] moves = new int[2];
+
+    public int[] getMoves() {
+        return moves;
+    }
+
+    public Board getBoard() {
+
+        return board;
+    }
 
     BoardHistory(Board board) {
         this.board = board;
@@ -28,7 +37,31 @@ public class BoardHistory {
         return level;
     }
 
-//    public List<BoardHistory> getNodesOfLevel
+    public List<BoardHistory> getChildren() {
+        return children;
+    }
+
+    private void getNodes(List<BoardHistory> nodesOfLevel, int level) {
+        if (this.children == null) {
+            return;
+        }
+        for (int i = 0; i < this.children.size(); i++) {
+            int currentLevel = this.children.get(i).getLevel();
+            if (currentLevel < level) {
+                getNodes(this.children.get(i).getChildren(),level);
+            } else if (currentLevel == level) {
+                nodesOfLevel.add(this);
+            } else {
+                break;
+            }
+        }
+    }
+
+    public List<BoardHistory> getNodesOfLevel(int level) {
+        List<BoardHistory> nodesOfLevel = new ArrayList<BoardHistory>();
+        getNodes(nodesOfLevel, level);
+        return nodesOfLevel;
+    }
 
     public void addNode(Board board,int elementMoved, int tilesMoved) {
         int[] moves = new int[2];
