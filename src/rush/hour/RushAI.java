@@ -28,26 +28,24 @@ public class RushAI {
         return 0;
     }
 
-    private Board cloneBoard (Board board) {
-        return board;
-
-    }
-
 
     // get all moves for current board
     public Board getCurrentMoves(Board board) {
         // init variables
-        int numberOfElements = board.getBoardElements().size();
-        Board tempBoard = cloneBoard(board);
+        Board tempBoard = board.getCopy();
+        int numberOfElements = tempBoard.getBoardElements().size();
+        System.out.println(numberOfElements);
 
 
         // loop over board elements
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < numberOfElements; i++) {
             // if element is a car
             if (tempBoard.getBoardElements().get(i) instanceof Car) {
                 // move element -MAX_MOVES < k < MAX_MOVES tiles
                 try {
                     for (int k = -1; k > -MAX_MOVES; k--) {
+                        tempBoard = board.getCopy();
+
                         tempBoard.move((Car) tempBoard.getBoardElements().get(i), k);
 
                         // if move succeeds, add to history
@@ -57,17 +55,15 @@ public class RushAI {
                         System.out.println("\n\n\n");
 
                         // reset board
-                        tempBoard = cloneBoard(board);
                     }
                 } catch (BoardElementClashException|ArrayIndexOutOfBoundsException e) {
                     System.out.println("Illegal move\n");
-                    tempBoard = cloneBoard(board);
+                    tempBoard = board.getCopy();
                 }
 
-                // reset board
-                tempBoard = cloneBoard(board);
                 try {
                     for (int k = 1; k < MAX_MOVES; k++) {
+                        tempBoard = board.getCopy();
                         tempBoard.move((Car) tempBoard.getBoardElements().get(i), k);
 
                         // if move succeeds, add to history
@@ -77,16 +73,14 @@ public class RushAI {
                         board.printSerializedBoard();
                         System.out.println("\n\n\n");
 
-                        // reset board
-                        tempBoard = cloneBoard(board);
                     }
                 } catch (BoardElementClashException|ArrayIndexOutOfBoundsException e) {
                     System.out.println("Illegal move\n");
-                    tempBoard = cloneBoard(board);
+                    tempBoard = board.getCopy();
                 }
             }
         }
 
-        return board;
+        return tempBoard;
     }
 }
