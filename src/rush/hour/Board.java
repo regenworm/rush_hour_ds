@@ -22,22 +22,43 @@ public class Board {
         this.boardElements = initializeBoard(hashMapBoard);
     }
 
+    /**
+     * Getter function for the board size
+     * @return An array where [0] is the x count, and [1] is the y count
+     */
     public int[] getBoardSize() {
         return boardSize;
     }
 
+    /**
+     * Getter function for the amount of columns in a board
+     * @return Column count
+     */
     public int getBoardColumnCount() {
         return boardSize[0];
     }
 
+    /**
+     * Getter function for the amount of rows in a board.
+     * @return Row count
+     */
     public int getBoardRowCount() {
         return boardSize[1];
     }
 
+    /**
+     * Getter function for the list of board elements
+     * @return boardElements
+     */
     public List<BoardElement> getBoardElements() {
         return boardElements;
     }
 
+    /**
+     * Gets a board element for the list of board elements by id
+     * @param id the id of the board element
+     * @return board element when found, otherwise returns null
+     */
     public BoardElement getBoardElement(char id) {
         for (BoardElement boardElement : boardElements) {
             if (boardElement.getId() == id) {
@@ -47,6 +68,13 @@ public class Board {
         return null;
     }
 
+    /**
+     * Moves a car with a certain amount of tiles.
+     * @param car The car object to move
+     * @param moveAmount The amount of tiles to move
+     * @throws BoardElementClashException When a car is not able to move to a tile location, because the tile is
+     * already occupied
+     */
     public void move(Car car, int moveAmount) throws BoardElementClashException {
         Car.Orientation orientation = car.getOrientation();
 
@@ -82,6 +110,10 @@ public class Board {
         car.setTiles(newCarTiles);
     }
 
+    /**
+     * Converts a board to a character array. A character is the id of a board element.
+     * @return array of board id characters
+     */
     public char[][] serializeBoard () {
         char[][] serializedBoard = new char[boardSize[0]][boardSize[1]];
         for (BoardElement boardElement : boardElements) {
@@ -202,6 +234,4 @@ public class Board {
         }
         return readInCharacters;
     }
-
-    public enum BoardMeasure { WIDTH, HEIGHT };
 }

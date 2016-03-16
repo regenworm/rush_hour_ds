@@ -37,6 +37,12 @@ public class BoardElement {
         this.tiles = tiles;
     }
 
+    /**
+     * Get a specific tile by x and y coordinates
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return a tile
+     */
     public Tile getTile (int x, int y) {
         for (Tile tile : tiles) {
             if (tile.getX() == x && tile.getY() == y) {
@@ -47,10 +53,20 @@ public class BoardElement {
         return null;
     }
 
+    /**
+     * Adds a new tile to a board element
+     * @param x x-coordinate
+     * @param y y-coordinate
+     */
     public void addTile (int x, int y) {
         tiles.add(new Tile(x, y));
     }
 
+    /**
+     * Removes a tile from a board element
+     * @param x x-coordinate
+     * @param y y-coordinate
+     */
     public void removeTile (int x, int y) {
         for (int i = 0; i < tiles.size(); i++) {
             if (tiles.get(i).getX() == x && tiles.get(i).getY() == y) {

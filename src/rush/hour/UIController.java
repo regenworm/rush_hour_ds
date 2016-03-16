@@ -16,6 +16,7 @@ public class UIController implements Initializable {
 
     @FXML
     HBox gridContainer;
+
     @FXML
     MenuItem onExit;
 
@@ -41,6 +42,10 @@ public class UIController implements Initializable {
         onNext.setOnAction(actionEvent -> previousBoard());
     }
 
+    /**
+     * Creates a new gameboard
+     * @return Grind panel of gameboard
+     */
     private GridPane addGameBoard() {
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -72,6 +77,9 @@ public class UIController implements Initializable {
         return grid;
     }
 
+    /**
+     * Updates the styles of the tiles on a gameboard
+     */
     private void updateGameBoard() {
         for (BoardElement boardElement : board.getBoardElements()) {
             for (Tile tile : boardElement.getTiles()) {
@@ -100,6 +108,9 @@ public class UIController implements Initializable {
         updateGameBoard();
     }
 
+    /**
+     * Exit the program by getting the window from the gridcontainer (gameboard)
+     */
     private void exitProgram() {
         Stage stage = (Stage) gridContainer.getScene().getWindow();
         stage.close();
