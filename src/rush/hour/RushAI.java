@@ -28,11 +28,18 @@ public class RushAI {
         return 0;
     }
 
+    private Board cloneBoard (Board board) {
+        return board;
+
+    }
+
+
     // get all moves for current board
     public Board getCurrentMoves(Board board) {
         // init variables
         int numberOfElements = board.getBoardElements().size();
-        Board tempBoard = board;
+        Board tempBoard = cloneBoard(board);
+
 
         // loop over board elements
         for (int i = 0; i < 2; i++) {
@@ -50,14 +57,15 @@ public class RushAI {
                         System.out.println("\n\n\n");
 
                         // reset board
-                        tempBoard.move((Car) tempBoard.getBoardElements().get(i), -k);
+                        tempBoard = cloneBoard(board);
                     }
-                } catch (BoardElementClashException e) {
+                } catch (BoardElementClashException|ArrayIndexOutOfBoundsException e) {
                     System.out.println("Illegal move\n");
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Illegal move\n");
+                    tempBoard = cloneBoard(board);
                 }
-                tempBoard = board;
+
+                // reset board
+                tempBoard = cloneBoard(board);
                 try {
                     for (int k = 1; k < MAX_MOVES; k++) {
                         tempBoard.move((Car) tempBoard.getBoardElements().get(i), k);
@@ -70,16 +78,15 @@ public class RushAI {
                         System.out.println("\n\n\n");
 
                         // reset board
-                        board.move((Car) tempBoard.getBoardElements().get(i), -k);
+                        tempBoard = cloneBoard(board);
                     }
-                } catch (BoardElementClashException e) {
+                } catch (BoardElementClashException|ArrayIndexOutOfBoundsException e) {
                     System.out.println("Illegal move\n");
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Illegal move\n");
+                    tempBoard = cloneBoard(board);
                 }
             }
         }
 
-        return tempBoard;
+        return board;
     }
 }
