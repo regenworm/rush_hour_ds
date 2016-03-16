@@ -145,11 +145,7 @@ public class Board {
         }
 
         // Intersection of lists
-        for (Tile tile : newCarTiles) {
-            if (newEmptyTiles.contains(tile)) {
-                newEmptyTiles.remove(tile);
-            }
-        }
+        newEmptyTiles.removeIf(newCarTiles::contains);
 
         car.removeTiles(newEmptyTiles);
         empty.removeTiles(newCarTiles);
