@@ -9,6 +9,7 @@ public class BoardHistory {
     private List<BoardHistory> children;
     private int level;
     private int[] moves = new int[2];
+    private int score;
 
     public int[] getMoves() {
         return moves;
@@ -23,6 +24,7 @@ public class BoardHistory {
         this.board = board;
         this.level = 0;
         this.children = new ArrayList<BoardHistory>();
+        this.score = getScore();
     }
 
     BoardHistory(Board board, int moves[], BoardHistory parent) {
@@ -31,6 +33,11 @@ public class BoardHistory {
         this.moves = moves;
         this.level = parent.getLevel()+1;
         this.children = new ArrayList<BoardHistory>();
+        this.score = getScore();
+    }
+
+    private int getScore() {
+        return 0;
     }
 
     public int getLevel() {
@@ -41,6 +48,7 @@ public class BoardHistory {
         return children;
     }
 
+//    throws ex no children
     private void getNodes(List<BoardHistory> nodesOfLevel, int level) {
         if (this.children == null) {
             return;
@@ -63,11 +71,14 @@ public class BoardHistory {
         return nodesOfLevel;
     }
 
-    public void addNode(Board board,int elementMoved, int tilesMoved) {
+//    throws ex redundant move
+    public BoardHistory addNode(Board board,int elementMoved, int tilesMoved) {
         int[] moves = new int[2];
         moves[0] = elementMoved;
         moves[1] = tilesMoved;
 
         children.add(new BoardHistory(board, moves, this));
+
+        return children.get(children.size()-1);
     }
 }

@@ -21,7 +21,9 @@ public class RushHourGame extends Application {
         board = new Board(game);
         printCurrentBoard(board);
 
+
         RushAI kirby = new RushAI(board);
+//        BoardHistory solution = kirby.solveBoard(board);
         board = kirby.getCurrentMoves(board);
 
         printCurrentBoard(board);
