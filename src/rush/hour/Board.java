@@ -154,6 +154,8 @@ public class Board {
 
         car.appendTiles(newCarTiles);
         empty.appendTiles(newEmptyTiles);
+
+        this.board = serializeBoard();
     }
 
     /**
