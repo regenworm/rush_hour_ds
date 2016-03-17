@@ -26,33 +26,14 @@ public class RushAI {
     }
 
     public boolean gameWon(Board board) {
-        BoardElement temp;
         List<Tile> goalTiles = board.getGoalTiles();
-        List<Tile> carTiles;
-        int xGoal;
-        int yGoal;
-
-        for (int i = 0; i < board.boardElements.size(); i++) {
-            temp = (Car) board.boardElements.get(i);
-            if (temp instanceof RedCar) {
-                continue;
+        for (BoardElement boardElement : board.getBoardElements()) {
+            if (boardElement instanceof RedCar) {
+                List<Tile> redCarTiles = boardElement.getTiles();
+                return goalTiles.containsAll(redCarTiles) && redCarTiles.containsAll(goalTiles);
             }
-            carTiles = temp.getTiles();
-
-            for (Tile goalTile : goalTiles) {
-                xGoal = goalTile.getX();
-                yGoal = goalTile.getY();
-
-                for (Tile carTile : carTiles) {
-                    if (xGoal == carTile.getX() || yGoal == carTile.getX()) {
-                        return false;
-                    }
-                }
-            }
-
         }
-
-        return true;
+        return false;
     }
 
     // solve current board
