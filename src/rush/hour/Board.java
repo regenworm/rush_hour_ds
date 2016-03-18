@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Board {
 
@@ -23,10 +20,20 @@ public class Board {
         this.boardElements = deSerializeBoard();
     }
 
+    public Board(List<BoardElement> boardElements, int[] boardSize, char[][] board) {
+        this.boardElements = boardElements;
+        this.boardSize = boardSize;
+        this.board = board;
+    }
+
     Board (char[][] serializedBoard, int[] boardSize){
         this.board = serializedBoard;
         this.boardSize = boardSize;
         this.boardElements = deSerializeBoard();
+    }
+
+    public static Board newInstance(Board board) {
+        return new Board(board.boardElements, board.boardSize, board.board);
     }
 
     public Board getCopy() {
@@ -148,6 +155,7 @@ public class Board {
 
         // Intersection of lists
         newEmptyTiles.removeIf(newCarTiles::contains);
+        newCarTiles.removeIf(newEmptyTiles::contains);
 
         car.removeTiles(newEmptyTiles);
         empty.removeTiles(newCarTiles);
@@ -280,6 +288,27 @@ public class Board {
             System.err.println("Orientation could not be determined because element has only one tile.");
         }
         return Car.Orientation.UNDEFINED;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Board board1 = (Board) o;
+
+        if (boardElements != null ? !boardElements.equals(board1.boardElements) : board1.boardElements != null)
+            return false;
+        if (!Arrays.equals(boardSize, board1.boardSize)) return false;
+        return Arrays.deepEquals(board, board1.board);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = boardElements != null ? boardElements.hashCode() : 0;
+        result = 31 * result + Arrays.hashCode(boardSize);
+        result = 31 * result + Arrays.deepHashCode(board);
+        return result;
     }
 
     @Override

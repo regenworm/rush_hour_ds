@@ -39,7 +39,9 @@ public class BoardElement {
 
     public void appendTiles(List<Tile> tiles) {
         for (Tile tile : tiles) {
-            this.tiles.add(tile);
+            if (!this.tiles.contains(tile)) {
+                this.tiles.add(tile);
+            }
         }
     }
 
