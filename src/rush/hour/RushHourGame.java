@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import rush.hour.Search.RushYorickBFS;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,18 +16,23 @@ public class RushHourGame extends Application {
 
     public RushHourGame() {
         // Path ondersteund geen relatief pad...
-//        Path game = Paths.get("/home/yorick/IdeaProjects/RushHour/boards/board1a.rushhour");
-        Path game = Paths.get("/Users/Alex/Documents/Datastructuren/DatastructurenNew/rush_hour_ds/boards/board1a.rushhour");
-        System.out.println(game.getParent());
+//        Path game = Paths.get("/home/yorick/IdeaProjects/RushHour/boards/testBoard.rushhour");
+        Path game = Paths.get("/home/yorick/IdeaProjects/RushHour/boards/board2a.rushhour");
+
+//        Path game = Paths.get("/Users/Alex/Documents/Datastructuren/DatastructurenNew/rush_hour_ds/boards/board1a.rushhour");
+//        System.out.println(game.getParent());
         board = new Board(game);
-        printCurrentBoard(board);
+//        System.out.println(board);
 
 
-        RushAI kirby = new RushAI(board);
+        RushYorickBFS AI = new RushYorickBFS(board);
+        AI.BFSearch();
+
+//        RushAI kirby = new RushAI(board);
 //        BoardHistory solution = kirby.solveBoard(board);
-        board = kirby.getCurrentMoves(board);
+//        board = kirby.getCurrentMoves(board);
 
-        printCurrentBoard(board);
+//        printCurrentBoard(board);
     }
 
     public static void main(String[] args) {
@@ -50,7 +56,4 @@ public class RushHourGame extends Application {
          primaryStage.show();
      }
 
-    public void printCurrentBoard(Board board) {
-        System.out.println(board.toString());
-    }
 }

@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class Board {
+public class Board implements Cloneable {
 
     List<BoardElement> boardElements;
     int[] boardSize;
@@ -26,7 +26,7 @@ public class Board {
         this.board = board;
     }
 
-    Board (char[][] serializedBoard, int[] boardSize){
+    public Board(char[][] serializedBoard, int[] boardSize) {
         this.board = serializedBoard;
         this.boardSize = boardSize;
         this.boardElements = deSerializeBoard();
@@ -164,6 +164,7 @@ public class Board {
         empty.appendTiles(newEmptyTiles);
 
         this.board = serializeBoard();
+        this.boardElements = deSerializeBoard();
     }
 
     /**
@@ -323,5 +324,10 @@ public class Board {
             builder.append("\n");
         }
         return builder.toString();
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
