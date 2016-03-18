@@ -1,11 +1,8 @@
-package rush.hour.Search;
+package rush.hour;
 
-import rush.hour.Board;
-import rush.hour.BoardElementClashException;
 import rush.hour.BoardElements.BoardElement;
 import rush.hour.BoardElements.Car;
 import rush.hour.BoardElements.RedCar;
-import rush.hour.Tile;
 
 import java.util.*;
 
@@ -24,8 +21,6 @@ public class RushYorickBFS {
     }
 
     public List<Board> BFSearch() {
-        List<Board> backwardSearchList = new ArrayList<>();
-
         newBoards.add(new Node(initialBoard, null));
 
         Node currentNode;
@@ -36,15 +31,12 @@ public class RushYorickBFS {
             System.out.println("LOOP COUNT: " + count++);
 //            System.out.println(currentNode.getBoard());
 
-            // Add the current board to visited boards
-//            visitedBoards.add(currentNode.getBoard().serializeBoard());
             // Add current board to the tree
             tree.put(currentNode.getBoard(), currentNode.getParent());
 
             // If game won exit loop
             if (gameWon(currentNode.getBoard())) {
-                System.out.println("won");
-                break;
+                return backTraverseTree(currentNode);
             }
 
             // Generate new boards from a board
@@ -57,19 +49,24 @@ public class RushYorickBFS {
                     nodes.add(new Node(newPossibleBoard, currentNode));
                     visitedBoards.add(newPossibleBoard.toString());
 
-                    System.out.println(newPossibleBoard);
+//                    System.out.println(newPossibleBoard);
                 }
             }
             // Add new boards to queue
             newBoards.addAll(nodes);
-
-//            if (count > 1) {
-//                break;
-//            }
         }
+        return null;
+    }
 
-
-        return backwardSearchList;
+    private List<Board> backTraverseTree(Node windNode) {
+        List<Board> boards = new ArrayList<>();
+        Node currentNode = windNode;
+        while (currentNode.getParent() != null) {
+            boards.add(currentNode.getBoard());
+            currentNode = currentNode.getParent();
+        }
+        Collections.reverse(boards);
+        return boards;
     }
 
     public boolean gameWon(Board board) {

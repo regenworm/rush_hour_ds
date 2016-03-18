@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import rush.hour.BoardElements.*;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -27,27 +29,31 @@ public class UIController implements Initializable {
     @FXML
     Button onPrevious;
 
-    private Board board;
+    private List<Board> boards;
     private Pane[][] tiles;
+    private HashMap<Character, String> carColors;
+    private int currentBoardShown = 0;
 
-    public UIController(Board board) {
-        this.board = board;
-        this.tiles = new Pane[board.getBoardRowCount()][board.getBoardColumnCount()];
+    public UIController(List<Board> boards) {
+        this.boards = boards;
+        System.err.println(boards);
+        this.tiles = new Pane[boards.get(0).getBoardRowCount()][boards.get(0).getBoardColumnCount()];
+        this.carColors = initializeNormalCarColors(this.boards.get(0));
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        gridContainer.getChildren().add(addGameBoard());
+        gridContainer.getChildren().add(addGameBoard(boards.get(0)));
         onExit.setOnAction(actionEvent -> exitProgram());
-        onPrevious.setOnAction(actionEvent -> nextBoard());
-        onNext.setOnAction(actionEvent -> previousBoard());
+        onPrevious.setOnAction(actionEvent -> previousBoard());
+        onNext.setOnAction(actionEvent -> nextBoard());
     }
 
     /**
      * Creates a new gameboard
      * @return Grind panel of gameboard
      */
-    private GridPane addGameBoard() {
+    private GridPane addGameBoard(Board board) {
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -74,16 +80,32 @@ public class UIController implements Initializable {
             grid.getColumnConstraints().add(new ColumnConstraints(60));
             grid.getRowConstraints().add(new RowConstraints(60));
         }
-
+        updateGameBoard(board);
         return grid;
+    }
+
+    private HashMap<Character, String> initializeNormalCarColors(Board board) {
+        HashMap<Character, String> carColors = new HashMap<>();
+        for (BoardElement boardElement : board.getBoardElements()) {
+            if (boardElement instanceof Car) {
+                String randomCarColor = Util.generateColor(new Random());
+                carColors.put(boardElement.getId(), randomCarColor);
+            }
+        }
+        return carColors;
     }
 
     /**
      * Updates the styles of the tiles on a gameboard
      */
-    private void updateGameBoard() {
+    private void updateGameBoard(Board board) {
+        for (int y = 0; y < tiles[0].length; y++) {
+            for (int x = 0; x < tiles.length; x++) {
+                tiles[x][y].getStyleClass().clear();
+                tiles[x][y].getStyleClass().add("tile-empty");
+            }
+        }
         for (BoardElement boardElement : board.getBoardElements()) {
-            String randomCarColor = Util.generateColor(new Random());
             for (Tile tile : boardElement.getTiles()) {
                 Pane cell = tiles[tile.getX()][tile.getY()];
                 if (boardElement instanceof Wall) {
@@ -95,19 +117,21 @@ public class UIController implements Initializable {
                 } else if (boardElement instanceof RedCar) {
                     cell.getStyleClass().add("tile-redcar");
                 } else if (boardElement instanceof Car) {
-                    //TODO SAVE CAR COLOR BETWEEN STEPS
-                    cell.setStyle("-fx-background-color: " + randomCarColor + ";");
+                    System.out.println(carColors.get(boardElement.getId()));
+                    cell.setStyle("-fx-background-color: " + carColors.get(boardElement.getId()) + ";");
                 }
             }
         }
     }
 
     private void nextBoard() {
-        updateGameBoard();
+        updateGameBoard(boards.get(currentBoardShown + 1));
+        currentBoardShown++;
     }
 
     private void previousBoard() {
-        updateGameBoard();
+        updateGameBoard(boards.get(currentBoardShown - 1));
+        currentBoardShown--;
     }
 
     /**
