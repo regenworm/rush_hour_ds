@@ -30,6 +30,7 @@ public class RushHourGame extends Application {
 
         // bfs search
         RushBFS AI = new RushBFS(initialBoard);
+        System.out.println("PLEASE STAND BY, SEARCHING...");
         solutionBoards = AI.BFSearch();
     }
 
