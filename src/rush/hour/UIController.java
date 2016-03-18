@@ -34,6 +34,7 @@ public class UIController implements Initializable {
     Button onPrevious;
 
     private List<Board> boards;
+
     private Pane[][] tiles;
     private HashMap<Character, String> carColors;
     private int totalSteps;

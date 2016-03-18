@@ -22,9 +22,8 @@ public class RushBFS {
 
     public List<Board> BFSearch() {
         newBoards.add(new Node(initialBoard, null));
-
+        long startTime = System.currentTimeMillis();
         Node currentNode;
-        int count = 0;
         while (!newBoards.isEmpty()) {
             currentNode = newBoards.poll();
 
@@ -33,6 +32,8 @@ public class RushBFS {
 
             // If game won exit loop
             if (gameWon(currentNode.getBoard())) {
+                long stopTime = System.currentTimeMillis();
+                System.out.println("Running time: " + Long.toString(stopTime - startTime) + "ms");
                 return backTraverseTree(currentNode);
             }
 
@@ -53,9 +54,10 @@ public class RushBFS {
         return null;
     }
 
-    private List<Board> backTraverseTree(Node windNode) {
+    private List<Board> backTraverseTree(Node winNode) {
         List<Board> boards = new ArrayList<>();
-        Node currentNode = windNode;
+        boards.add(winNode.getBoard());
+        Node currentNode = winNode;
         while (currentNode.getParent() != null) {
             boards.add(currentNode.getBoard());
             currentNode = currentNode.getParent();
