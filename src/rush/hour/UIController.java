@@ -126,7 +126,6 @@ public class UIController implements Initializable {
                 } else if (boardElement instanceof RedCar) {
                     cell.setStyle("-fx-background-color: red;");
                 } else if (boardElement instanceof Car) {
-                    System.out.println(carColors.get(boardElement.getId()));
                     cell.setStyle("-fx-background-color: " + carColors.get(boardElement.getId()) + ";");
                 }
             }

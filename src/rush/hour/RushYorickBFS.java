@@ -113,12 +113,9 @@ public class RushYorickBFS {
                         int[] tempSize = previousBoard.getBoardSize();
                         tempBoard = new Board(temp, tempSize);
                         amount -= 1;
-//                        tempBoard.move((Car) boardElement, amount);
                         tempBoard.move((Car) tempBoard.getBoardElement(id), amount);
 
-//                        System.out.println("Between: \n" + tempBoard);
                     } catch (BoardElementClashException e) {
-//                        System.out.println("Vehicle clash");
                         try {
                             tempBoard.move((Car) tempBoard.getBoardElement(id), amount + 1);
                             newBoards.add(tempBoard);
@@ -127,7 +124,6 @@ public class RushYorickBFS {
                         }
                         break;
                     } catch (ArrayIndexOutOfBoundsException e) {
-//                        System.out.println("Vehicle out of bounds");
                         try {
                             tempBoard.move((Car) tempBoard.getBoardElement(id), amount + 1);
                             newBoards.add(tempBoard);
