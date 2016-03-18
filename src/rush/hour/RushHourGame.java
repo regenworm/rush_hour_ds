@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -15,11 +16,12 @@ public class RushHourGame extends Application {
     private List<Board> solutionBoards;
 
     public RushHourGame() {
-        // Path ondersteund geen relatief pad...
-//        Path game = Paths.get("/home/yorick/IdeaProjects/RushHour/boards/testBoard.rushhour");
-        Path game = Paths.get("/home/yorick/IdeaProjects/RushHour/boards/board1a.rushhour");
-//        Path game = Paths.get("/Users/Alex/Documents/Datastructuren/DatastructurenNew/rush_hour_ds/boards/board1a.rushhour");
+        // get path
+        String basepath = new File("").getAbsolutePath();
+        basepath  = basepath.concat("/../boards/board1a.rushhour");
+        Path game = Paths.get(basepath);
         Board initialBoard = new Board(game);
+
 
         RushYorickBFS AI = new RushYorickBFS(initialBoard);
         solutionBoards = AI.BFSearch();

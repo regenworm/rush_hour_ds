@@ -71,14 +71,28 @@ public class BoardHistory {
         return nodesOfLevel;
     }
 
+    private boolean checkRedundant() {
+        if (this.parent != null) {
+            if (this.board.toString().equals(parent.getBoard().toString())){
+                return false;
+            }
+            parent.checkRedundant();
+        }
+        return true;
+    }
+
 //    throws ex redundant move
     public BoardHistory addNode(Board board,int elementMoved, int tilesMoved) {
         int[] moves = new int[2];
         moves[0] = elementMoved;
         moves[1] = tilesMoved;
 
-        children.add(new BoardHistory(board, moves, this));
+        if (checkRedundant()) {
+            children.add(new BoardHistory(board, moves, this));
 
-        return children.get(children.size()-1);
+            return children.get(children.size() - 1);
+        } else {
+            return null;
+        }
     }
 }
