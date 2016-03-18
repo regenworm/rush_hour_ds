@@ -18,10 +18,9 @@ public class RushHourGame extends Application {
     public RushHourGame() {
         // get path
         String basepath = new File("").getAbsolutePath();
-        basepath  = basepath.concat("/../boards/board1a.rushhour");
+        basepath = basepath.concat("/boards/board1a.rushhour");
         Path game = Paths.get(basepath);
         Board initialBoard = new Board(game);
-
 
         RushYorickBFS AI = new RushYorickBFS(initialBoard);
         solutionBoards = AI.BFSearch();

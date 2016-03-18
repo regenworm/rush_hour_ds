@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -21,6 +22,9 @@ public class UIController implements Initializable {
     HBox gridContainer;
 
     @FXML
+    HBox stepCountLabelContainer;
+
+    @FXML
     MenuItem onExit;
 
     @FXML
@@ -32,17 +36,21 @@ public class UIController implements Initializable {
     private List<Board> boards;
     private Pane[][] tiles;
     private HashMap<Character, String> carColors;
-    private int currentBoardShown = 0;
+    private int totalSteps;
+    private int currentStep = 0;
+    private Label stepsLabel;
 
     public UIController(List<Board> boards) {
         this.boards = boards;
-        System.err.println(boards);
         this.tiles = new Pane[boards.get(0).getBoardRowCount()][boards.get(0).getBoardColumnCount()];
         this.carColors = initializeNormalCarColors(this.boards.get(0));
+        this.totalSteps = boards.size();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        stepsLabel = new Label(Integer.toString(currentStep));
+        stepCountLabelContainer.getChildren().add(stepsLabel);
         gridContainer.getChildren().add(addGameBoard(boards.get(0)));
         onExit.setOnAction(actionEvent -> exitProgram());
         onPrevious.setOnAction(actionEvent -> previousBoard());
@@ -99,23 +107,24 @@ public class UIController implements Initializable {
      * Updates the styles of the tiles on a gameboard
      */
     private void updateGameBoard(Board board) {
+        stepsLabel.setText(" Showing board: " + Integer.toString(currentStep) + "/" + totalSteps);
+
         for (int y = 0; y < tiles[0].length; y++) {
             for (int x = 0; x < tiles.length; x++) {
-                tiles[x][y].getStyleClass().clear();
-                tiles[x][y].getStyleClass().add("tile-empty");
+                tiles[x][y].setStyle("-fx-background-color: white;");
             }
         }
         for (BoardElement boardElement : board.getBoardElements()) {
             for (Tile tile : boardElement.getTiles()) {
                 Pane cell = tiles[tile.getX()][tile.getY()];
                 if (boardElement instanceof Wall) {
-                    cell.getStyleClass().add("tile-wall");
+                    cell.setStyle("-fx-background-color: saddlebrown;");
                 } else if (boardElement instanceof Empty) {
-                    cell.getStyleClass().add("tile-empty");
+                    cell.setStyle("-fx-background-color: white;");
                 } else if (boardElement instanceof Goal) {
-                    cell.getStyleClass().add("tile-goal");
+                    cell.setStyle("-fx-background-color: black;");
                 } else if (boardElement instanceof RedCar) {
-                    cell.getStyleClass().add("tile-redcar");
+                    cell.setStyle("-fx-background-color: red;");
                 } else if (boardElement instanceof Car) {
                     System.out.println(carColors.get(boardElement.getId()));
                     cell.setStyle("-fx-background-color: " + carColors.get(boardElement.getId()) + ";");
@@ -125,13 +134,17 @@ public class UIController implements Initializable {
     }
 
     private void nextBoard() {
-        updateGameBoard(boards.get(currentBoardShown + 1));
-        currentBoardShown++;
+        if (totalSteps > currentStep) {
+            updateGameBoard(boards.get(currentStep + 1));
+            currentStep++;
+        }
     }
 
     private void previousBoard() {
-        updateGameBoard(boards.get(currentBoardShown - 1));
-        currentBoardShown--;
+        if (currentStep >= 0) {
+            updateGameBoard(boards.get(currentStep - 1));
+            currentStep--;
+        }
     }
 
     /**

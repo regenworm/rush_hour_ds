@@ -28,9 +28,6 @@ public class RushYorickBFS {
         while (!newBoards.isEmpty()) {
             currentNode = newBoards.poll();
 
-            System.out.println("LOOP COUNT: " + count++);
-//            System.out.println(currentNode.getBoard());
-
             // Add current board to the tree
             tree.put(currentNode.getBoard(), currentNode.getParent());
 
@@ -48,8 +45,6 @@ public class RushYorickBFS {
                 if (!visitedBoards.contains(newPossibleBoard.toString())) {
                     nodes.add(new Node(newPossibleBoard, currentNode));
                     visitedBoards.add(newPossibleBoard.toString());
-
-//                    System.out.println(newPossibleBoard);
                 }
             }
             // Add new boards to queue
@@ -82,11 +77,9 @@ public class RushYorickBFS {
 
     public List<Board> generateNextBoards(Board previousBoard) {
         List<Board> newBoards = new ArrayList<>();
-//        for (BoardElement boardElement : previousBoard.getBoardElements()) {
         for (BoardElement boardElement : previousBoard.getBoardElements()) {
             char id = boardElement.getId();
             if (boardElement instanceof Car) {
-                System.out.println("Moving: " + boardElement.getId());
                 int amount = 0;
                 Board tempBoard = null;
                 while (true) {
@@ -96,32 +89,21 @@ public class RushYorickBFS {
                         tempBoard = new Board(temp, tempSize);
                         amount += 1;
                         tempBoard.move((Car) tempBoard.getBoardElement(id), amount);
-//                        tempBoard.move((Car) boardElement, amount);
-//                        System.out.println("Between: \n" + tempBoard);
                     } catch (BoardElementClashException e) {
-//                        System.out.println("Vehicle clash");
                         try {
                             tempBoard.move((Car) tempBoard.getBoardElement(id), amount - 1);
                             newBoards.add(tempBoard);
                         } catch (Exception r) {
                         }
-//                        System.out.println("amount " + amount);
-//                        System.out.println("Final: \n" + tempBoard);
                         break;
                     } catch (ArrayIndexOutOfBoundsException e) {
-//                        System.out.println("Vehicle out of bounds");
                         try {
                             tempBoard.move((Car) tempBoard.getBoardElement(id), amount - 1);
                             newBoards.add(tempBoard);
 
                         } catch (Exception r) {
                         }
-//                        System.out.println("amount " + amount);
-//                        System.out.println("Final: \n" + tempBoard);
                         break;
-//                    } catch (CloneNotSupportedException e) {
-//                        System.err.println("Cloning not supported");
-//                        break;
                     }
                 }
                 amount = 0;
@@ -143,8 +125,6 @@ public class RushYorickBFS {
 
                         } catch (Exception r) {
                         }
-//                        System.out.println("amount " + amount);
-//                        System.out.println("Final: \n" + tempBoard);
                         break;
                     } catch (ArrayIndexOutOfBoundsException e) {
 //                        System.out.println("Vehicle out of bounds");
@@ -154,12 +134,7 @@ public class RushYorickBFS {
 
                         } catch (Exception r) {
                         }
-//                        System.out.println("amount " + amount);
-//                        System.out.println("Final: \n" + tempBoard);
                         break;
-//                    } catch (CloneNotSupportedException e) {
-//                        System.out.println("Cloning not supported");
-//                        break;
                     }
                 }
             }

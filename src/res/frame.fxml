@@ -4,8 +4,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.KeyCodeCombination?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <VBox xmlns:fx="http://javafx.com/fxml" fx:id="root" alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8">
     <children>
         <MenuBar VBox.vgrow="NEVER">
@@ -24,7 +23,9 @@
             </menus>
         </MenuBar>
 
-        <HBox fx:id="gridContainer" alignment="CENTER"></HBox>
+        <HBox fx:id="stepCountLabelContainer" alignment="CENTER" minHeight="30"></HBox>
+
+        <HBox fx:id="gridContainer" alignment="CENTER" minHeight="20"></HBox>
 
         <HBox alignment="BOTTOM_CENTER">
             <Button fx:id="onPrevious" text="Previous step"></Button>
