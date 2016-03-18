@@ -91,9 +91,9 @@ public class Board {
         List<Tile> goalTiles = new ArrayList<>();
         for (int i=0; i<redCarLength; i++) {
             if (redCar.getOrientation() == Car.Orientation.HORIZONTAL) {
-                goalTiles.add(new Tile(xGoal - i, yGoal));
+                goalTiles.add(new Tile(xGoal - i - 1, yGoal));
             } else {
-                goalTiles.add(new Tile(xGoal, yGoal - i));
+                goalTiles.add(new Tile(xGoal, yGoal - i - 1));
             }
         }
         return goalTiles;
