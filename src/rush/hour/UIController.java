@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for the UI
+ */
 public class UIController implements Initializable {
 
     @FXML
@@ -45,7 +48,7 @@ public class UIController implements Initializable {
         this.boards = boards;
         this.tiles = new Pane[boards.get(0).getBoardRowCount()][boards.get(0).getBoardColumnCount()];
         this.carColors = initializeNormalCarColors(this.boards.get(0));
-        this.totalSteps = boards.size();
+        this.totalSteps = boards.size() - 1;
     }
 
     @Override
@@ -60,7 +63,7 @@ public class UIController implements Initializable {
 
     /**
      * Creates a new gameboard
-     * @return Grind panel of gameboard
+     * @return Grid panel of gameboard
      */
     private GridPane addGameBoard(Board board) {
         GridPane grid = new GridPane();
@@ -93,6 +96,12 @@ public class UIController implements Initializable {
         return grid;
     }
 
+    /**
+     * Creates a hashmap which assigns a color to every car id
+     *
+     * @param board a board
+     * @return A hashmap where the key is the car id and the value the color in hex format, includes the hashtag.
+     */
     private HashMap<Character, String> initializeNormalCarColors(Board board) {
         HashMap<Character, String> carColors = new HashMap<>();
         for (BoardElement boardElement : board.getBoardElements()) {
@@ -105,10 +114,11 @@ public class UIController implements Initializable {
     }
 
     /**
-     * Updates the styles of the tiles on a gameboard
+     * Performs the update of the UI.
+     * @param board The current board
      */
     private void updateGameBoard(Board board) {
-        stepsLabel.setText(" Showing board: " + Integer.toString(currentStep) + "/" + totalSteps);
+        stepsLabel.setText(" Showing step: " + Integer.toString(currentStep) + "/" + totalSteps);
 
         for (int y = 0; y < tiles[0].length; y++) {
             for (int x = 0; x < tiles.length; x++) {
@@ -133,17 +143,23 @@ public class UIController implements Initializable {
         }
     }
 
+    /**
+     * Launches a board ui update, gets board from next step
+     */
     private void nextBoard() {
-        if (totalSteps > currentStep) {
-            updateGameBoard(boards.get(currentStep + 1));
+        if (currentStep < totalSteps) {
             currentStep++;
+            updateGameBoard(boards.get(currentStep));
         }
     }
 
+    /**
+     * Launches a board ui update, gets board from previous step
+     */
     private void previousBoard() {
-        if (currentStep >= 0) {
-            updateGameBoard(boards.get(currentStep - 1));
+        if (currentStep > 0) {
             currentStep--;
+            updateGameBoard(boards.get(currentStep));
         }
     }
 

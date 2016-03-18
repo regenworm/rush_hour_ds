@@ -1,5 +1,8 @@
 package rush.hour;
 
+/**
+ * Represents tile on the board
+ */
 public class Tile {
 
     private int x;
@@ -25,6 +28,12 @@ public class Tile {
         this.y = y;
     }
 
+    /**
+     * Equals when tiles x and y coordinates are the same
+     *
+     * @param o Tile object
+     * @return True when match
+     */
     @Override
     public boolean equals(Object o) {
         boolean equal = false;

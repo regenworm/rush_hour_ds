@@ -6,6 +6,9 @@ import rush.hour.BoardElements.RedCar;
 
 import java.util.*;
 
+/**
+ * RushHour breadth first search
+ */
 public class RushBFS {
 
     HashMap<Board, Node> tree;
@@ -20,6 +23,11 @@ public class RushBFS {
         this.initialBoard = initialBoard;
     }
 
+    /**
+     * Breadth first search
+     *
+     * @return a list of boards when a solution is found, null when there no solution could be found
+     */
     public List<Board> BFSearch() {
         newBoards.add(new Node(initialBoard, null));
         long startTime = System.currentTimeMillis();
@@ -33,7 +41,7 @@ public class RushBFS {
             // If game won exit loop
             if (gameWon(currentNode.getBoard())) {
                 long stopTime = System.currentTimeMillis();
-                System.out.println("Running time: " + Long.toString(stopTime - startTime) + "ms");
+                System.out.println("Search execution time: " + Long.toString(stopTime - startTime) + "ms");
                 return backTraverseTree(currentNode);
             }
 
@@ -54,19 +62,31 @@ public class RushBFS {
         return null;
     }
 
+    /**
+     * Builds a list of boards from the tree in the form a of hashmap.
+     *
+     * @param winNode the last node
+     * @return boards from start to goal
+     */
     private List<Board> backTraverseTree(Node winNode) {
         List<Board> boards = new ArrayList<>();
-        boards.add(winNode.getBoard());
         Node currentNode = winNode;
         while (currentNode.getParent() != null) {
             boards.add(currentNode.getBoard());
             currentNode = currentNode.getParent();
         }
         Collections.reverse(boards);
+        boards.add(0, initialBoard);
         return boards;
     }
 
-    public boolean gameWon(Board board) {
+    /**
+     * Tests if the redcar is placed on the win tiles in front of the goal
+     *
+     * @param board a board object
+     * @return True when the redcar's tiles are exactly the same as the win tiles.
+     */
+    private boolean gameWon(Board board) {
         List<Tile> goalTiles = board.getGoalTiles();
         for (BoardElement boardElement : board.getBoardElements()) {
             if (boardElement instanceof RedCar) {
@@ -77,7 +97,13 @@ public class RushBFS {
         return false;
     }
 
-    public List<Board> generateNextBoards(Board previousBoard) {
+    /**
+     * Creates a list of boards which are possible next boards from a previous board
+     *
+     * @param previousBoard the previous bord object
+     * @return list of boards
+     */
+    private List<Board> generateNextBoards(Board previousBoard) {
         List<Board> newBoards = new ArrayList<>();
         for (BoardElement boardElement : previousBoard.getBoardElements()) {
             char id = boardElement.getId();
@@ -141,7 +167,10 @@ public class RushBFS {
         return newBoards;
     }
 
-    public class Node {
+    /**
+     * Helper class for tree structure, contains a board and a parent Node
+     */
+    private class Node {
         Node parent;
         Board board;
 

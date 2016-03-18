@@ -11,17 +11,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * This is the main class. Launches the solver and inits the UI.
+ */
 public class RushHourGame extends Application {
+
+    // CHANGE THIS TO DESIRED BOARD NAME
+    private static final String BOARDNAME = "board1a.rushhour";
 
     private List<Board> solutionBoards;
 
     public RushHourGame() {
         // get path
         String basepath = new File("").getAbsolutePath();
-        basepath = basepath.concat("/boards/board1c.rushhour");
+        basepath = basepath.concat("/boards/" + BOARDNAME);
         Path game = Paths.get(basepath);
         Board initialBoard = new Board(game);
 
+        // bfs search
         RushBFS AI = new RushBFS(initialBoard);
         solutionBoards = AI.BFSearch();
     }
@@ -36,11 +43,9 @@ public class RushHourGame extends Application {
          UIController uiController = new UIController(solutionBoards);
          loader.setController(uiController);
          Parent root = loader.load();
-         primaryStage.setTitle("RushHour");
+         primaryStage.setTitle("The Fantastic RushHour Solver");
 
-         Scene scene = new Scene(root, 300, 275);
-         String css = this.getClass().getResource("../../res/style.css").toExternalForm();
-         scene.getStylesheets().add(css);
+         Scene scene = new Scene(root, 800, 600);
 
          primaryStage.setScene(scene);
          primaryStage.show();

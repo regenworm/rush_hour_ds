@@ -7,9 +7,16 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class Board implements Cloneable {
+/**
+ * Saves the board structure. The is saved as both a list of board elements which can be queried and as a 2d character
+ * array containing the ids as given in the loaded text file.
+ */
+public class Board {
 
     List<BoardElement> boardElements;
     int[] boardSize;
@@ -34,10 +41,6 @@ public class Board implements Cloneable {
 
     public static Board newInstance(Board board) {
         return new Board(board.boardElements, board.boardSize, board.board);
-    }
-
-    public Board getCopy() {
-        return new Board(serializeBoard(), boardSize);
     }
 
     /**
@@ -292,27 +295,6 @@ public class Board implements Cloneable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Board board1 = (Board) o;
-
-        if (boardElements != null ? !boardElements.equals(board1.boardElements) : board1.boardElements != null)
-            return false;
-        if (!Arrays.equals(boardSize, board1.boardSize)) return false;
-        return Arrays.deepEquals(board, board1.board);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = boardElements != null ? boardElements.hashCode() : 0;
-        result = 31 * result + Arrays.hashCode(boardSize);
-        result = 31 * result + Arrays.deepHashCode(board);
-        return result;
-    }
-
-    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < getBoardRowCount(); i++)
@@ -324,10 +306,5 @@ public class Board implements Cloneable {
             builder.append("\n");
         }
         return builder.toString();
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
     }
 }
