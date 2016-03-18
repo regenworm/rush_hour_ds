@@ -6,14 +6,14 @@ import rush.hour.BoardElements.RedCar;
 
 import java.util.*;
 
-public class RushYorickBFS {
+public class RushBFS {
 
     HashMap<Board, Node> tree;
     Set<String> visitedBoards;
     Queue<Node> newBoards;
     Board initialBoard;
 
-    public RushYorickBFS(Board initialBoard) {
+    public RushBFS(Board initialBoard) {
         this.tree = new HashMap<>();
         this.newBoards = new LinkedList<>();
         this.visitedBoards = new HashSet<>();

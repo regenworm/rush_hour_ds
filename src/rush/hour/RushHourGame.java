@@ -22,7 +22,7 @@ public class RushHourGame extends Application {
         Path game = Paths.get(basepath);
         Board initialBoard = new Board(game);
 
-        RushYorickBFS AI = new RushYorickBFS(initialBoard);
+        RushBFS AI = new RushBFS(initialBoard);
         solutionBoards = AI.BFSearch();
     }
 
